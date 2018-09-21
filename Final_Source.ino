@@ -8,6 +8,8 @@
  * 블루투스 모듈은 5V == 3.3V, GND == GND로 꼽아주셔도 됩니다.
  * 대신 전력은 PC와 연결해서 계속 공급해주세요
  * 아아! 참고로 제가 드린 아두이노 보드 외에, 저희는 아두이노 프로 미니 라는 제품을 사용할꺼에요! 참고해주셨으면 좋겠습니다.
+ * 인식은 현금의 앞쪽(현금의 점자있는곳, 세종대왕있는곳)의 왼쪽 아래 금액써져있는 부분을 인식하시면 됩니다.
+ * 점자있는곳을 기준으로 잡는게 편할꺼라 생각해서 이렇게 잡았습니다.
 */
 
 
@@ -60,22 +62,22 @@ void loop() {
   delay(200);   ///B인식 속도
 
   //이부분 수정하실 때 값이 겹치지 않게 수정해주세요
-    if((13 == R || 14 == R) && (11 == G || 12 == G) && (8 == B || 9 == B)){ //이부분 수정해서 인식 값변경
+    if((13 == R || 14 == R) && (11 == G || 12 == G) && (8 == B || 9 == B)){ //(1000원)이부분 수정해서 인식 값변경
       Serial.println("");
       Serial.print("1,000");
       ++t1;
     }
-    else if((13 == R || 14 == R) && (15 == G || 16 == G) && (12 == B || 13 == B)){  //이부분 수정해서 인식 값변경
+    else if((13 == R || 14 == R) && (15 == G || 16 == G) && (12 == B || 13 == B)){  //(5000원)이부분 수정해서 인식 값변경
       Serial.println("");
       Serial.print("5,000");
       ++t5;
     }
-    else if((14 == R || 15 == R) && (12 == G || 13 == G) && (10 == B || 11 == B)){  //이부분 수정해서 인식 값변경
+    else if((14 == R || 15 == R) && (12 == G || 13 == G) && (10 == B || 11 == B)){  //(10000원)이부분 수정해서 인식 값변경
       Serial.println("");
       Serial.print("10,000");
       ++m1;
     }
-    else if((15 == R || 16 == R) && (15 == G || 16 == G) && (12 == B || 13 == B)){  //이부분 수정해서 인식 값변경
+    else if((15 == R || 16 == R) && (15 == G || 16 == G) && (12 == B || 13 == B)){  //(50000원)이부분 수정해서 인식 값변경
       Serial.println("");
       Serial.print("50,000");
       ++m5;
@@ -89,18 +91,18 @@ void loop() {
       limit = max(max(t1,t5) , max(m1,m5)); //최댓값 구하기
       limit = max(limit,N);   //최댓값 = limit변수 안으로
       if(limit == t1){
-        BTSerial.print("1t");   //BTSerial 은 블루투스 모듈을 통해 안드로이드로 값을 보내는 친구임다
+        BTSerial.print("1t");   //(1000원)BTSerial 은 블루투스 모듈을 통해 안드로이드로 값을 보내는 친구임다. 이부분을 Seiral.print로 바꾸면 안드로이드 말고 시리얼 모니터로 확인 가능합니다.
         Serial.println("");
       }
-      else if(limit == t5){
+      else if(limit == t5){   //(5000원)
         BTSerial.print("5t");
         Serial.println("");
       }
-      else if(limit == m1){
+      else if(limit == m1){   //(10000원)
         BTSerial.print("1m");
         Serial.println("");
       }
-      else if(limit == m5){
+      else if(limit == m5){   //(50000원)
         BTSerial.print("5m");
         Serial.println("");
       }
